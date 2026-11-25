@@ -1,22 +1,36 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Menu, X, Sparkles } from "lucide-react";
+import { getCurrentLocalUser, logoutLocalUser, type LocalUser } from "@/lib/local-auth";
 
 const links = [
   { to: "/", label: "Home" },
   { to: "/search", label: "Search" },
   { to: "/playlist", label: "Playlist" },
   { to: "/download", label: "Download" },
-  { to: "/login", label: "Log in" },
 ] as const;
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const [user, setUser] = useState<LocalUser | null>(null);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   useEffect(() => {
     setOpen(false);
+    setUser(getCurrentLocalUser());
   }, [pathname]);
+
+  const authLink = user
+    ? user.role === "admin"
+      ? { to: "/admin", label: "Admin" }
+      : null
+    : { to: "/login", label: "Log in" };
+
+  const handleLogout = () => {
+    logoutLocalUser();
+    setUser(null);
+    setOpen(false);
+  };
 
   return (
     <header className="sk-nav">
@@ -42,6 +56,23 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
+            {authLink ? (
+              <Link
+                to={authLink.to}
+                className={`sk-nav-link ${pathname === authLink.to ? "is-active" : ""}`}
+              >
+                {authLink.label}
+              </Link>
+            ) : null}
+            {user ? (
+              <button type="button" className="sk-nav-link sk-nav-logout" onClick={handleLogout}>
+                Log out
+              </button>
+            ) : (
+              <Link to="/signup" className="sk-nav-link">
+                Sign up
+              </Link>
+            )}
             <Link to="/" hash="find-my-vibe" className="sk-btn sk-btn-primary sk-btn-sm">
               <Sparkles size={16} aria-hidden="true" /> Find My Vibe
             </Link>
@@ -68,6 +99,20 @@ export default function Navbar() {
               {link.label}
             </Link>
           ))}
+          {authLink ? (
+            <Link to={authLink.to} className="sk-nav-link">
+              {authLink.label}
+            </Link>
+          ) : null}
+          {user ? (
+            <button type="button" className="sk-nav-link sk-nav-logout" onClick={handleLogout}>
+              Log out
+            </button>
+          ) : (
+            <Link to="/signup" className="sk-nav-link">
+              Sign up
+            </Link>
+          )}
           <Link to="/" hash="find-my-vibe" className="sk-btn sk-btn-primary sk-btn-sm">
             <Sparkles size={16} aria-hidden="true" /> Find My Vibe
           </Link>

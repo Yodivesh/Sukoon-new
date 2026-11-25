@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as BusRouteImport } from './routes/bus'
 import { Route as DanceRouteImport } from './routes/dance'
 import { Route as DownloadRouteImport } from './routes/download'
@@ -18,10 +19,16 @@ import { Route as LoveRouteImport } from './routes/love'
 import { Route as PlaylistRouteImport } from './routes/playlist'
 import { Route as SalonRouteImport } from './routes/salon'
 import { Route as SearchRouteImport } from './routes/search'
+import { Route as SignupRouteImport } from './routes/signup'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BusRoute = BusRouteImport.update({
@@ -64,9 +71,15 @@ const SearchRoute = SearchRouteImport.update({
   path: '/search',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/bus': typeof BusRoute
   '/dance': typeof DanceRoute
   '/download': typeof DownloadRoute
@@ -75,9 +88,11 @@ export interface FileRoutesByFullPath {
   '/playlist': typeof PlaylistRoute
   '/salon': typeof SalonRoute
   '/search': typeof SearchRoute
+  '/signup': typeof SignupRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/bus': typeof BusRoute
   '/dance': typeof DanceRoute
   '/download': typeof DownloadRoute
@@ -86,10 +101,12 @@ export interface FileRoutesByTo {
   '/playlist': typeof PlaylistRoute
   '/salon': typeof SalonRoute
   '/search': typeof SearchRoute
+  '/signup': typeof SignupRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/bus': typeof BusRoute
   '/dance': typeof DanceRoute
   '/download': typeof DownloadRoute
@@ -98,11 +115,13 @@ export interface FileRoutesById {
   '/playlist': typeof PlaylistRoute
   '/salon': typeof SalonRoute
   '/search': typeof SearchRoute
+  '/signup': typeof SignupRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
     | '/bus'
     | '/dance'
     | '/download'
@@ -111,9 +130,11 @@ export interface FileRouteTypes {
     | '/playlist'
     | '/salon'
     | '/search'
+    | '/signup'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/admin'
     | '/bus'
     | '/dance'
     | '/download'
@@ -122,9 +143,11 @@ export interface FileRouteTypes {
     | '/playlist'
     | '/salon'
     | '/search'
+    | '/signup'
   id:
     | '__root__'
     | '/'
+    | '/admin'
     | '/bus'
     | '/dance'
     | '/download'
@@ -133,10 +156,12 @@ export interface FileRouteTypes {
     | '/playlist'
     | '/salon'
     | '/search'
+    | '/signup'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRoute
   BusRoute: typeof BusRoute
   DanceRoute: typeof DanceRoute
   DownloadRoute: typeof DownloadRoute
@@ -145,6 +170,7 @@ export interface RootRouteChildren {
   PlaylistRoute: typeof PlaylistRoute
   SalonRoute: typeof SalonRoute
   SearchRoute: typeof SearchRoute
+  SignupRoute: typeof SignupRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -154,6 +180,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/bus': {
@@ -212,11 +245,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SearchRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRoute,
   BusRoute: BusRoute,
   DanceRoute: DanceRoute,
   DownloadRoute: DownloadRoute,
@@ -225,6 +266,7 @@ const rootRouteChildren: RootRouteChildren = {
   PlaylistRoute: PlaylistRoute,
   SalonRoute: SalonRoute,
   SearchRoute: SearchRoute,
+  SignupRoute: SignupRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -70,7 +70,12 @@
   --sk-glass-strong: oklch(1 0 0 / 0.86);
   --sk-glass-border: oklch(1 0 0 / 0.6);
 
-  --gradient-hero: linear-gradient(135deg, oklch(0.95 0.05 200), oklch(0.97 0.04 90) 45%, oklch(0.94 0.06 30));
+  --gradient-hero: linear-gradient(
+    135deg,
+    oklch(0.95 0.05 200),
+    oklch(0.97 0.04 90) 45%,
+    oklch(0.94 0.06 30)
+  );
   --gradient-brand: linear-gradient(120deg, oklch(0.62 0.13 195), oklch(0.72 0.15 155));
   --gradient-warm: linear-gradient(120deg, oklch(0.78 0.15 40), oklch(0.72 0.17 15));
   --gradient-bus: linear-gradient(140deg, oklch(0.93 0.06 220), oklch(0.96 0.06 95));
@@ -259,6 +264,15 @@
   outline: 0;
 }
 
+.sk-select {
+  width: 100%;
+  border: 1px solid var(--input);
+  border-radius: 12px;
+  padding: 0.78rem 0.85rem;
+  color: var(--foreground);
+  background: var(--background);
+}
+
 .sk-auth-submit {
   width: 100%;
   margin-top: 0.35rem;
@@ -293,11 +307,117 @@
   font-size: 0.94rem;
 }
 
+.sk-admin-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.sk-admin-count,
+.sk-admin-current {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  padding: 0.55rem 0.9rem;
+  color: var(--secondary-foreground);
+  background: var(--secondary);
+  font-size: 0.88rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.sk-admin-warning {
+  margin: 0 0 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1rem 1.2rem;
+  color: var(--muted-foreground);
+  background: var(--sk-glass);
+  font-size: 0.9rem;
+}
+
+.sk-admin-list {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.sk-admin-user {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.2rem;
+}
+
+.sk-admin-user-details {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  min-width: 0;
+}
+
+.sk-admin-user-icon {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  color: var(--primary);
+  background: var(--secondary);
+}
+
+.sk-admin-email {
+  overflow-wrap: anywhere;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.sk-admin-user .sk-muted {
+  margin: 0.3rem 0 0;
+  font-size: 0.84rem;
+}
+
+.sk-admin-remove {
+  flex: 0 0 auto;
+  color: var(--destructive);
+}
+
+.sk-admin-empty {
+  padding: 1.5rem;
+  color: var(--muted-foreground);
+  text-align: center;
+}
+
+.sk-admin-logout {
+  margin-top: 1.5rem;
+}
+
+.sk-nav-logout {
+  cursor: pointer;
+  font: inherit;
+}
+
 .sk-gradient-text {
   background: var(--gradient-brand);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+}
+
+@media (max-width: 760px) {
+  .sk-admin-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .sk-admin-user {
+    align-items: flex-start;
+    flex-direction: column;
+  }
 }
 
 /* ============ BUTTONS ============ */
@@ -313,7 +433,11 @@
   font-size: 0.95rem;
   font-weight: 700;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease;
   text-decoration: none;
   line-height: 1;
 }
@@ -437,7 +561,9 @@
   color: var(--sk-ink-soft);
   font-weight: 600;
   font-size: 0.95rem;
-  transition: background 0.2s ease, color 0.2s ease;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
 }
 
 .sk-nav-link:hover,
@@ -563,7 +689,9 @@
   color: var(--foreground);
   box-shadow: var(--shadow-card);
   border: 1px solid var(--sk-glass-border);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .sk-vibe-card:hover {
@@ -594,7 +722,12 @@
   justify-content: flex-end;
   gap: 0.5rem;
   padding: var(--space-2);
-  background: linear-gradient(180deg, oklch(1 0 0 / 0.05) 20%, oklch(1 0 0 / 0.82) 62%, oklch(1 0 0 / 0.95));
+  background: linear-gradient(
+    180deg,
+    oklch(1 0 0 / 0.05) 20%,
+    oklch(1 0 0 / 0.82) 62%,
+    oklch(1 0 0 / 0.95)
+  );
 }
 
 .sk-vibe-emoji {
@@ -653,7 +786,10 @@
   font-weight: 600;
   font-size: 0.92rem;
   cursor: pointer;
-  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .sk-mood-chip:hover {
@@ -739,7 +875,9 @@
   border-radius: 20px;
   padding: 0.75rem;
   box-shadow: var(--shadow-soft);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .sk-song:hover {

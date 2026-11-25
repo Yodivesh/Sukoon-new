@@ -1,6 +1,7 @@
 import { FormEvent, useState } from "react";
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import { ArrowRight, LockKeyhole, Mail } from "lucide-react";
+import { loginLocalUser, type UserRole } from "@/lib/local-auth";
 
 export const Route = createFileRoute("/login")({
   head: () => ({
@@ -16,20 +17,25 @@ function LoginPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState<UserRole>("user");
   const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError("");
+    setIsSubmitting(true);
 
-    if (!email || !password) {
-      setError("Enter your email and password to continue.");
-      return;
+    try {
+      const user = await loginLocalUser(email, password, role);
+      void navigate({ to: user.role === "admin" ? "/admin" : "/playlist" });
+    } catch (loginError) {
+      setError(
+        loginError instanceof Error ? loginError.message : "Unable to log in. Please try again.",
+      );
+    } finally {
+      setIsSubmitting(false);
     }
-
-    window.localStorage.setItem("sukoon_logged_in", "true");
-    window.localStorage.setItem("sukoon_user_email", email);
-    void navigate({ to: "/playlist" });
   };
 
   return (
@@ -88,19 +94,38 @@ function LoginPage() {
             </span>
           </label>
 
+          <label className="sk-field">
+            <span>Log in as</span>
+            <select
+              className="sk-input sk-select"
+              value={role}
+              onChange={(event) => setRole(event.target.value === "admin" ? "admin" : "user")}
+            >
+              <option value="user">User</option>
+              <option value="admin">Admin</option>
+            </select>
+          </label>
+
           {error ? (
             <p className="sk-auth-error" role="alert">
               {error}
             </p>
           ) : null}
 
-          <button type="submit" className="sk-btn sk-btn-primary sk-auth-submit">
-            Log in <ArrowRight size={16} aria-hidden="true" />
+          <button
+            type="submit"
+            className="sk-btn sk-btn-primary sk-auth-submit"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? "Logging in..." : "Log in"} <ArrowRight size={16} aria-hidden="true" />
           </button>
           <p className="sk-auth-note">
-            New here? <Link to="/">Explore Sukoon first</Link>
+            New here? <Link to="/signup">Create an account</Link>
           </p>
-          <p className="sk-auth-demo">Demo mode: this stores a local browser session only.</p>
+          <p className="sk-auth-demo">
+            Demo mode: accounts and roles are stored only in this browser and are not secure
+            authentication.
+          </p>
         </form>
       </section>
     </div>
